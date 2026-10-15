@@ -1,0 +1,1 @@
+console.log("=== START TESTU ZAPISU I ODCZYTU ===");
