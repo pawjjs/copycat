@@ -5,13 +5,11 @@ const PORT = 3000;
 
 app.use(express.json());
 
-let lobbies = [
-    {
-        id: 1,
-        status: 'waiting',
-        players: []
-    },
-];
+let lobbies = [{
+    id: 1, 
+    status: 'waiting', 
+    players: []
+},];
 
 app.get('/lobbies', (req, res) => {
     res.json(lobbies);
@@ -28,15 +26,19 @@ app.get('/lobby/:id', (req, res) => {
 
 app.post('/lobby/:id/join', (req, res) => {
     const lobbyId = parseInt(req.params.id);
-    const {playerName} = req.body;
+    const {playerName} = req.body ?? {};
 
     const lobby = lobbies.find(l => l.id === lobbyId);
     lobby.players.push(playerName);
 
-    res.json({
-        message: `Gracz ${playerName} dołączył do lobby ${lobbyId}`,
+    res.status(201).json({
+        message: `Gracz ${playerName} dołączył do lobby ${lobbyId}`, 
         lobby: lobby
     });
 });
+
+app.delete("/lobby/:id", (req, res) =>{
+    const 
+})
 
 app.listen(PORT);
