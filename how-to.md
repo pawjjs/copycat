@@ -1,12 +1,13 @@
-[!WARNING]
-If db-data may not be contained on github repository, if that is the case YOU SHOULD CREATE IT YOURSELF
+> [!WARNING]  
+> If db-data may not be contained on github repository, if that is the case YOU SHOULD CREATE IT YOURSELF
 
 On Linux:
   ```bash 
-  mkdir db-data``` 
+  mkdir db-data
+``` 
 
 And whateverthefuck on Windows, you can manage
-
+## General information
 None of our programs should be executed raw on our machines, thats why we use docker and docker compose.
 In case you are not familiar with those:
 
@@ -18,19 +19,19 @@ In case you are not familiar with those:
     So: we use docker compose to avoid having to run very long and complicated commands every time we want to rebuild our apps.
 
 Configurations can be found in:
-For docker:
+#### For docker:
 
   `client/Dockerfile` for frontend configuration
   `server/Dockerfile` for backend configuration
   for simplicity reasons we Postgresql configuration is hardwired in docker compose
 
-For docker compose
+#### For docker compose:
     
   `docker-compose.yaml` in project root, it contains informations telling docker composer how to create different services (frontend, backend, database)
 
 Hopefully now everything is at least a bit clear.
 
-INSTALLATION:
+## Installation:
 
 Install nodejs from this website: https://nodejs.org/en/download
 
