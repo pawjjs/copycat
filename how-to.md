@@ -40,11 +40,11 @@ I will show you how to set everyting in CLI but most of those things are doable 
 If you use docker desktop, remember that it has to be turned on for docker commands to work.
 
 In project root directory, create an `.env` file and fill it with data in such manner:
-
+```
 POSTGRES_PASSWORD=<value>
 POSTGRES_USER=<value>
 PGUSER=<value>
-
+```
 Then proceed to create an empty .env files in both client and server subdirectories.
 
 Those values will be used to generate database config, replace <value> with appropriate values
