@@ -33,7 +33,7 @@ app.use(
 
 
 app.use(express.json());
-
+/*
 let lobbies = [{
     id: 1,
     status: 'waiting',
@@ -80,4 +80,6 @@ app.delete("/lobby/:id", (req, res) => {
         lobby: deletedLobby
     });
 });
+ */
+app.use("/lobbies", lobbyRoutes);
 app.listen(PORT);
