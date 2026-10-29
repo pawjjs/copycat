@@ -34,7 +34,7 @@ app.use(
 
 app.use(express.json());
 
-/*let lobbies = [{
+let lobbies = [{
     id: 1,
     status: 'waiting',
     players: []
@@ -79,8 +79,5 @@ app.delete("/lobby/:id", (req, res) => {
         message: `Lobby o ID ${lobbyId} zostało pomyślnie usunięte`,
         lobby: deletedLobby
     });
-});*/
-
-app.use("/lobbies", lobbyRoutes);
-
+});
 app.listen(PORT);
