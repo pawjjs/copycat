@@ -35,6 +35,8 @@ router.get("/", lobbyController.getLobbies);
  *         description: Success
  *       400:
  *         description: Bad request
+ *       404:
+ *         description: Not found
  */
 router.get("/:id", lobbyController.getLobby);
 
@@ -56,6 +58,8 @@ router.get("/:id", lobbyController.getLobby);
  *         description: Success
  *       400:
  *         description: Bad request
+ *       404:
+ *         description: Not found
  */
 router.post("/:id/join", lobbyController.joinLobby);
 

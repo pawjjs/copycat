@@ -19,7 +19,9 @@ export function joinLobby(req, res){
     const {playerName} = req.body ?? {};
 
     const lobby = lobbyService.joinLobby(lobbyId, playerName);
-
+    if (!lobby) {
+        return res.status(404).json({error: 'Nie znaleziono takiego lobby'});
+    }
     res.json({
         message: `Gracz ${playerName} dołączył do lobby ${lobbyId}`,
         lobby: lobby
