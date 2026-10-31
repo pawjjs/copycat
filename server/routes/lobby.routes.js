@@ -1,4 +1,4 @@
-import { Router } from "express";
+import {Router} from "express";
 import * as lobbyController from "../controllers/lobby.controller.js";
 
 const router = Router();
@@ -17,6 +17,7 @@ const router = Router();
  *         description: Bad request
  */
 router.get("/", lobbyController.getLobbies);
+
 /**
  * @openapi
  * '/lobbies/{id}':
@@ -62,6 +63,42 @@ router.get("/:id", lobbyController.getLobby);
  *         description: Not found
  */
 router.post("/:id/join", lobbyController.joinLobby);
+
+/**
+ * @openapi
+ * /lobbies/{id}/leave:
+ *   delete:
+ *     tags:
+ *       - Lobby
+ *     summary: Leave lobby by id
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       description: Choose player to leave
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - playerId
+ *             properties:
+ *               playerId:
+ *                 type: integer
+ *                 example: 0
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Not found
+ */
+router.delete("/:id/leave", lobbyController.leaveLobby);
 
 /**
  * @openapi

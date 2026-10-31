@@ -8,6 +8,7 @@ export function getLobbies(req, res){
 export function getLobby(req, res){
     const lobbyId = parseInt(req.params.id);
     const lobby = lobbyService.getLobbyById(lobbyId);
+    
     if (!lobby) {
         return res.status(404).json({error: 'Nie znaleziono takiego lobby'});
     }
@@ -16,15 +17,32 @@ export function getLobby(req, res){
 
 export function joinLobby(req, res){
     const lobbyId = parseInt(req.params.id);
-    const {playerName} = req.body ?? {};
+    const { playerId } = req.body ?? {};
 
-    const lobby = lobbyService.joinLobby(lobbyId, playerName);
-    if (!lobby) {
-        return res.status(404).json({error: 'Nie znaleziono takiego lobby'});
+    const result = lobbyService.joinLobby(lobbyId, parseInt(playerId));
+    if (!result) {
+        return res.status(404).json({error: 'Nie znaleziono takiego lobby albo gracza'}); // do rozdzielenia za pomocą errorów
     }
     res.json({
-        message: `Gracz ${playerName} dołączył do lobby ${lobbyId}`,
-        lobby: lobby
+        message: `Gracz ${result.joinedPlayer.name} dołączył do lobby ${lobbyId}`,
+        joinedPlayer: result.joinedPlayer,
+        lobby: result.lobby
+    });
+}
+
+export function leaveLobby(req, res){
+    const lobbyId = parseInt((req.params.id));
+    const { playerId } = req.body ?? {};
+
+    const result = lobbyService.leaveLobby(lobbyId, parseInt(playerId));
+    if (!result) {
+        return res.status(404).json({error: 'Nie znaleziono takiego lobby albo gracza'}); // do rozdzielenia za pomocą errorów
+    }
+    
+    res.json({
+        message: `Gracz ${result.removedPlayer.name} opuścił lobby ${lobbyId}`,
+        removedPlayer: result.removedPlayerPlayer,
+        lobby: result.lobby
     });
 }
 
