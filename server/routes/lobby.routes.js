@@ -54,6 +54,19 @@ router.get("/:id", lobbyController.getLobby);
  *         required: true
  *         schema:
  *           type: integer
+ *     requestBody:
+ *       description: Choose player to join
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - playerId
+ *             properties:
+ *               playerId:
+ *                 type: integer
+ *                 example: 0
  *     responses:
  *       200:
  *         description: Success
