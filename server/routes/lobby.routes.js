@@ -43,6 +43,23 @@ router.get("/:id", lobbyController.getLobby);
 
 /**
  * @openapi
+ * '/lobbies/create':
+ *   post:
+ *     tags:
+ *       - Lobby
+ *     summary: create new lobby
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Not found
+ */
+router.post("/create", lobbyController.createLobby);
+
+/**
+ * @openapi
  * '/lobbies/{id}/join':
  *   post:
  *     tags:

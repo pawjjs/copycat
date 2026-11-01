@@ -15,6 +15,12 @@ export function getLobby(req, res){
     res.json(lobby);
 }
 
+export function createLobby(req, res){
+    const lobby = lobbyService.createLobby();
+    
+    res.json(lobby);
+}
+
 export function joinLobby(req, res){
     const lobbyId = parseInt(req.params.id);
     const { playerId } = req.body ?? {};
