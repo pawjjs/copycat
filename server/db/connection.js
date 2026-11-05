@@ -11,7 +11,7 @@ const dbPassword = process.env.POSTGRES_PASSWORD;
 const dbName = process.env.POSTGRES_DB;
 const dbPort = process.env.DB_PORT;
 
-const pool = new Pool({
+export const pool = new Pool({
     user: dbUser,
     host: dbHost,
     database: dbName,
