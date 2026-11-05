@@ -27,38 +27,22 @@ export async function create() {
     return await findById(newLobby.id);
 }
 
-export async function addPlayerToLobby(lobbyId, playerId) {
-    const lobby = await Lobby.findByPk(lobbyId);
+export async function assignPlayerToLobby(lobbyId, playerId) {
     const player = await Player.findByPk(playerId);
-
-    if (!lobby || !player) {
-        return null;
-    }
 
     player.lobby_id = lobbyId;
     await player.save();
     return await findById(lobbyId);
 }
 
-export async function removePlayerFromLobby(lobbyId, playerId) {
-    const player = await Player.findByPk(playerId);
-    if (!player || player.lobby_id !== lobbyId) {
-        return null;
-    }
-
-    player.lobby_id = lobbyId;
-    await player.save();
-    return await findById(lobbyId);
-}
-
-export async function removeLobbyById(id) {
-    const lobby = await findById(id);
+export async function removeLobbyById(lobbyId) {
+    const lobby = await findById(lobbyId);
     if (!lobby) {
         return null;
     }
 
     await Lobby.destroy({
-        where: {id}
+        where: {id: lobbyId}
     });
     return lobby;
 }
