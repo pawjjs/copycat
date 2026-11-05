@@ -73,3 +73,5 @@ app.delete("/lobby/:id", (req, res) => {
  */
 app.use("/lobbies", lobbyRoutes);
 app.listen(PORT);
+
+// Kocham js!
