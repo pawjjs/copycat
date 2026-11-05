@@ -1,21 +1,20 @@
-export class Lobby {
-    constructor(id, status) {
-        this.id = id;
-        this.status = status;
-        this.players = [];
-    }
+import {DataTypes} from "sequelize";
+import {sequelize} from '../db/connection.js';
 
-    addPlayer(player) {
-        const doesExists = this.players.some((p) => p.id === player.id);
-        if (!doesExists) {
-            this.players.push(player);
-        }
+export const Lobby = sequelize.define(
+    'Lobby', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        status: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
+            defaultValue: 'waiting',
+        },
+    },
+    {
+        tableName: 'lobbies',
     }
-
-    removePlayer(player) {
-        if (!player || player.id === undefined) {
-            return;
-        }
-        this.players = this.players.filter((p) => p.id !== player.id);
-    }
-}
+);
