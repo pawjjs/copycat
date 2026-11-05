@@ -62,7 +62,6 @@ router.get("/:id", lobbyController.getLobby);
  *         description: Not found
  */
 router.post("/:id/join", lobbyController.joinLobby);
-// HOOKS TESTING
 
 /**
  * @openapi
