@@ -33,7 +33,7 @@ app.use(
 app.use("/lobbies", lobbyRoutes);
 
 try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: true }); // to jest tymczasowe trzeba na migracje przejść!!!!
     console.log("Tabele PostgreSQL zsynchronizowane pomyślnie.");
 } catch (error) {
     console.error("Błąd synchronizacji bazy danych:", error);
