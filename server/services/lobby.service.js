@@ -1,33 +1,33 @@
-let lobbies = [
-    {
-        id: 1,
-        status: 'waiting',
-        players: []
-    }
+const lobbies = [
+	{
+		id: 1,
+		status: "waiting",
+		players: [],
+	},
 ];
 
 export function getAllLobbies() {
-    return lobbies;
+	return lobbies;
 }
 
 export function getLobbyById(id) {
-    return lobbies.find((l) => l.id === id);
+	return lobbies.find((l) => l.id === id);
 }
 
 export function joinLobby(id, playerName) {
-    const lobby = getLobbyById(id);
-    if(!lobby){
-        return null;
-    }
-    lobby.players.push(playerName); // zamiast dodawać nazwę na listę trzeba będzie dodawać obiekt
-    return lobby;
+	const lobby = getLobbyById(id);
+	if (!lobby) {
+		return null;
+	}
+	lobby.players.push(playerName); // zamiast dodawać nazwę na listę trzeba będzie dodawać obiekt
+	return lobby;
 }
 
-export function deleteLobby(id){
-    const index = lobbies.findIndex((l) => l.id === id);
-    if(index === -1){
-        return null;
-    }
-    
-    return lobbies.splice(index, 1)[0];
+export function deleteLobby(id) {
+	const index = lobbies.findIndex((l) => l.id === id);
+	if (index === -1) {
+		return null;
+	}
+
+	return lobbies.splice(index, 1)[0];
 }
