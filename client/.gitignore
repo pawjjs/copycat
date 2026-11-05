@@ -39,3 +39,7 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 .idea
+# custom
+
+.env
+node_modules
