@@ -3,7 +3,6 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import lobbyRoutes from "./routes/lobby.routes.js";
 import { sequelize } from "./db/connection.js";
-import "./models/index.js";
 
 const app = express();
 const PORT = 3000;
@@ -34,7 +33,7 @@ app.use(
 app.use("/lobbies", lobbyRoutes);
 
 try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("Tabele PostgreSQL zsynchronizowane pomyślnie.");
 } catch (error) {
     console.error("Błąd synchronizacji bazy danych:", error);
