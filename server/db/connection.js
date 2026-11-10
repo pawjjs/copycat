@@ -21,8 +21,7 @@ export const sequelize = new Sequelize(
 );
 
 try {
-    //await sequelize.authenticate();
-    await sequelize.sync({force: true});
+    await sequelize.authenticate();
     console.log('Połączono z PostgreSQL przez Sequelize!');
 } catch (err) {
     console.error('Błąd połączenia z bazą danych:', err.message);
