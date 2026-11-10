@@ -1,7 +1,4 @@
-'use strict';
-
-/** @type {import('sequelize-cli').Migration} */
-module.exports = {
+export default {
   async up (queryInterface, Sequelize) {
     /**
      * Add altering commands here.
@@ -44,7 +41,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      lobbyId: {
+      lobby_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

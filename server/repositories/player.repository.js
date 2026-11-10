@@ -1,4 +1,4 @@
-import dbModule from '../models/index.cjs';
+import dbModule from '../models/index.js';
 const { lobby: Lobby, player: Player } = dbModule;
 
 export async function findAll() {
