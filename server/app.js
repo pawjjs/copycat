@@ -14,12 +14,33 @@ const webSocketServer = new WebSocketServer({
     server: server
 });
 
+const clients = {};
+
 webSocketServer.on('connection', (client) =>{
-   client.send('Witaj kliencie');
-   client.on('message', (message) =>{
-      console.log(message);
-      client.send(message);
+    client.send('Witaj kliencie');
+    client.on('message', (message) =>{
+        const data = JSON.parse(message);
+
+        if (data.type === "AUTH") {
+            clients[data.id] = client;
+        }
+
+        if (data.type === "MSG") {
+            const recipient = clients[data.to];
+
+            if (recipient && recipient.readyState === 1) {
+                recipient.send(data.content)
+            }
+        }
    });
+
+    client.on("close", () => {
+        for (const id in clients) {
+            if (clients[id] === client) {
+                delete clients[id];
+            }
+        }
+    });
 });
 
 
