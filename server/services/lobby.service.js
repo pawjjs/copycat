@@ -1,80 +1,49 @@
-import {Lobby} from "../models/lobby.model.js";
-import {Player} from "../models/player.model.js"
-import {getPlayerById, players} from "../services/player.service.js";
-
-let lobbies = [
-    new Lobby(1, "waiting"),
-    new Lobby(2, "waiting"),
-];
+import * as lobbyRepo from "../repositories/lobby.repository.js";
+import * as playerRepo from "../repositories/player.repository.js";
 
 
-// for tests, later needs to be thought about for websockets. 
-// might be problem with id collision, 
-// trying to use crypto but don't know how will it work with websockets
-export function generateUniqueId(numberOfBytes = 3){ 
-    let buffer = new Uint8Array(numberOfBytes);
-    crypto.getRandomValues(buffer);
-    
-    return Array.from(buffer).join('');
+export async function getAllLobbies() {
+    return await lobbyRepo.findAll();
 }
 
-lobbies[0].addPlayer(players[0]);
-
-export function getAllLobbies() {
-    return lobbies;
+export async function getLobbyById(id) {
+    return await lobbyRepo.findById(id);
 }
 
-export function getLobbyById(id) {
-    return lobbies.find((l) => l.id === id);
+export async function createLobby() {
+    return await lobbyRepo.create();
 }
 
-export function createLobby(){
-    const numberOfBytes = 3;
-    const newLobby = {
-        id: parseInt(generateUniqueId(numberOfBytes)),
-        status: 'waiting',
-        players: []
+export async function joinLobby(lobbyId, playerId) {
+    const lobby = await lobbyRepo.findById(lobbyId);
+    const player = await playerRepo.findById(playerId);
+
+    if (!lobby || !player) {
+        return null;
+    }
+
+    const updatedLobby = await lobbyRepo.assignPlayerToLobby(lobbyId, playerId);
+    return {
+        joinedPlayer: player,
+        lobby: updatedLobby
     };
-    lobbies.push(newLobby);
-    return newLobby;
 }
 
-export function joinLobby(lobbyId, playerId) {
-    const lobby = getLobbyById(lobbyId);
-    if (!lobby) {
+export async function leaveLobby(lobbyId, playerId) {
+    const lobby = await lobbyRepo.findById(lobbyId);
+    const player = await playerRepo.findById(playerId);
+
+    if (!lobby || !player) {
         return null;
     }
 
-    const player = getPlayerById(playerId);
-    if (!player) {
-        return null;
-    }
-
-    lobby.addPlayer(player);
-    return {lobby, joinedPlayer: player};
+    const updatedLobby = await lobbyRepo.assignPlayerToLobby(null, playerId);
+    return {
+        removedPlayer: player,
+        lobby: updatedLobby
+    };
 }
 
-
-export function leaveLobby(lobbyId, playerId) {
-    const lobby = getLobbyById(lobbyId);
-    if (!lobby) {
-        return null;
-    }
-
-    const player = getPlayerById(playerId);
-    if (!player) {
-        return null;
-    }
-
-    lobby.removePlayer(player);
-    return {lobby, removedPlayer: player};
-}
-
-export function deleteLobby(lobbyId) {
-    const index = lobbies.findIndex((l) => l.id === lobbyId);
-    if (index === -1) {
-        return null;
-    }
-
-    return lobbies.splice(index, 1)[0];
+export async function deleteLobby(lobbyId) {
+    return await lobbyRepo.removeLobbyById(lobbyId);
 }

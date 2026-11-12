@@ -1,9 +1,4 @@
-import {Player} from "../models/player.model.js"
-
-export let players = [
-    new Player(0, "Kucu"),
-    new Player(1, "Ania")
-];
+import * as playerRepo from "../repositories/player.repository.js";
 
 export function getAllPlayers() {
     return players;

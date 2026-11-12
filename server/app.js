@@ -1,9 +1,8 @@
 import express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-
-
 import lobbyRoutes from "./routes/lobby.routes.js";
+import { sequelize } from "./db/connection.js";
 
 const app = express();
 const PORT = 3000;
