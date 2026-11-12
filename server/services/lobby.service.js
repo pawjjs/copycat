@@ -1,33 +1,49 @@
-let lobbies = [
-    {
-        id: 1,
-        status: 'waiting',
-        players: []
-    }
-];
+import * as lobbyRepo from "../repositories/lobby.repository.js";
+import * as playerRepo from "../repositories/player.repository.js";
 
-export function getAllLobbies() {
-    return lobbies;
+
+export async function getAllLobbies() {
+    return await lobbyRepo.findAll();
 }
 
-export function getLobbyById(id) {
-    return lobbies.find((l) => l.id === id);
+export async function getLobbyById(id) {
+    return await lobbyRepo.findById(id);
 }
 
-export function joinLobby(id, playerName) {
-    const lobby = getLobbyById(id);
-    if(!lobby){
+export async function createLobby() {
+    return await lobbyRepo.create();
+}
+
+export async function joinLobby(lobbyId, playerId) {
+    const lobby = await lobbyRepo.findById(lobbyId);
+    const player = await playerRepo.findById(playerId);
+
+    if (!lobby || !player) {
         return null;
     }
-    lobby.players.push(playerName); // zamiast dodawać nazwę na listę trzeba będzie dodawać obiekt
-    return lobby;
+
+    const updatedLobby = await lobbyRepo.assignPlayerToLobby(lobbyId, playerId);
+    return {
+        joinedPlayer: player,
+        lobby: updatedLobby
+    };
 }
 
-export function deleteLobby(id){
-    const index = lobbies.findIndex((l) => l.id === id);
-    if(index === -1){
+export async function leaveLobby(lobbyId, playerId) {
+    const lobby = await lobbyRepo.findById(lobbyId);
+    const player = await playerRepo.findById(playerId);
+
+    if (!lobby || !player) {
         return null;
     }
-    
-    return lobbies.splice(index, 1)[0];
+
+    const updatedLobby = await lobbyRepo.assignPlayerToLobby(null, playerId);
+    return {
+        removedPlayer: player,
+        lobby: updatedLobby
+    };
+}
+
+export async function deleteLobby(lobbyId) {
+    return await lobbyRepo.removeLobbyById(lobbyId);
 }
