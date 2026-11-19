@@ -10,7 +10,7 @@ export async function getLobby(req, res){
     const lobby = await lobbyService.getLobbyById(lobbyId);
     
     if (!lobby) {
-        return res.status(404).json({error: 'Nie znaleziono takiego lobby'});
+        return res.status(404).json({error: 'Lobby not found'});
     }
     res.json(lobby);
 }
@@ -27,10 +27,10 @@ export async function joinLobby(req, res){
 
     const result = await lobbyService.joinLobby(lobbyId, parseInt(playerId));
     if (!result) {
-        return res.status(404).json({error: 'Nie znaleziono takiego lobby albo gracza'}); // do rozdzielenia za pomocą errorów
+        return res.status(404).json({error: 'Lobby or Player not found'}); // do rozdzielenia za pomocą errorów
     }
     res.json({
-        message: `Gracz ${result.joinedPlayer.name} dołączył do lobby ${lobbyId}`,
+        message: `Player ${result.joinedPlayer.name} joined lobby: ${lobbyId}`,
         joinedPlayer: result.joinedPlayer,
         lobby: result.lobby
     });
@@ -42,11 +42,11 @@ export async function leaveLobby(req, res){
 
     const result = await lobbyService.leaveLobby(lobbyId, parseInt(playerId));
     if (!result) {
-        return res.status(404).json({error: 'Nie znaleziono takiego lobby albo gracza'}); // do rozdzielenia za pomocą errorów
+        return res.status(404).json({error: 'Lobby or Player not found'}); // do rozdzielenia za pomocą errorów
     }
     
     res.json({
-        message: `Gracz ${result.removedPlayer.name} opuścił lobby ${lobbyId}`,
+        message: `Player ${result.removedPlayer.name} leaved lobby ${lobbyId}`,
         removedPlayer: result.removedPlayerPlayer,
         lobby: result.lobby
     });
@@ -57,11 +57,11 @@ export async function deleteLobby(req, res){
     const deletedLobby = await lobbyService.deleteLobby(lobbyId);
 
     if (!deletedLobby) {
-        return res.status(404).json({ error: "Nie znaleziono takiego lobby" });
+        return res.status(404).json({ error: "'Lobby not found'y" });
     }
 
     res.json({
-        message: `Lobby o ID ${lobbyId} zostało pomyślnie usunięte`,
+        message: `Lobby ${lobbyId} was deleted`,
         lobby: deletedLobby
     });
 }
