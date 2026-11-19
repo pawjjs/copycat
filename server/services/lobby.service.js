@@ -1,28 +1,33 @@
-import * as lobbyRepo from "../repositories/lobby.repository.js";
-import * as playerRepo from "../repositories/player.repository.js";
-
+import {
+    findAll as findAllLobbies,
+    findById as findLobbyById,
+    create as createNewLobby,
+    assignPlayerToLobby,
+    removeLobbyById
+} from "../repositories/lobby.repository.js";
+import {findById as findPlayerById} from "../repositories/player.repository.js";
 
 export async function getAllLobbies() {
-    return await lobbyRepo.findAll();
+    return await findAllLobbies();
 }
 
 export async function getLobbyById(id) {
-    return await lobbyRepo.findById(id);
+    return await findLobbyById(id);
 }
 
 export async function createLobby() {
-    return await lobbyRepo.create();
+    return await createNewLobby();
 }
 
 export async function joinLobby(lobbyId, playerId) {
-    const lobby = await lobbyRepo.findById(lobbyId);
-    const player = await playerRepo.findById(playerId);
+    const lobby = await findLobbyById(lobbyId);
+    const player = await findPlayerById(playerId);
 
     if (!lobby || !player) {
         return null;
     }
 
-    const updatedLobby = await lobbyRepo.assignPlayerToLobby(lobbyId, playerId);
+    const updatedLobby = await assignPlayerToLobby(lobbyId, playerId);
     return {
         joinedPlayer: player,
         lobby: updatedLobby
@@ -30,14 +35,14 @@ export async function joinLobby(lobbyId, playerId) {
 }
 
 export async function leaveLobby(lobbyId, playerId) {
-    const lobby = await lobbyRepo.findById(lobbyId);
-    const player = await playerRepo.findById(playerId);
+    const lobby = await findLobbyById(lobbyId);
+    const player = await findPlayerById(playerId);
 
     if (!lobby || !player) {
         return null;
     }
 
-    const updatedLobby = await lobbyRepo.assignPlayerToLobby(null, playerId);
+    const updatedLobby = await assignPlayerToLobby(null, playerId);
     return {
         removedPlayer: player,
         lobby: updatedLobby
@@ -45,5 +50,5 @@ export async function leaveLobby(lobbyId, playerId) {
 }
 
 export async function deleteLobby(lobbyId) {
-    return await lobbyRepo.removeLobbyById(lobbyId);
+    return await removeLobbyById(lobbyId);
 }
