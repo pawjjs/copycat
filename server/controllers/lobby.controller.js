@@ -1,43 +1,67 @@
 import * as lobbyService from "../services/lobby.service.js";
 
-export function getLobbies(_req, res) {
-	const lobbies = lobbyService.getAllLobbies();
-	res.json(lobbies);
+export async function getLobbies(req, res){
+    const lobbies = await lobbyService.getAllLobbies();
+    res.json(lobbies);
 }
 
-export function getLobby(req, res) {
-	const lobbyId = parseInt(req.params.id, 10);
-	const lobby = lobbyService.getLobbyById(lobbyId);
-	if (!lobby) {
-		return res.status(404).json({ error: "Nie znaleziono takiego lobby" });
-	}
-	res.json(lobby);
+export async function getLobby(req, res){
+    const lobbyId = parseInt(req.params.id);
+    const lobby = await lobbyService.getLobbyById(lobbyId);
+
+    if (!lobby) {
+        return res.status(404).json({error: 'Lobby not found'});
+    }
+    res.json(lobby);
 }
 
-export function joinLobby(req, res) {
-	const lobbyId = parseInt(req.params.id, 10);
-	const { playerName } = req.body ?? {};
+export async function createLobby(req, res){
+    const lobby = await lobbyService.createLobby();
 
-	const lobby = lobbyService.joinLobby(lobbyId, playerName);
-	if (!lobby) {
-		return res.status(404).json({ error: "Nie znaleziono takiego lobby" });
-	}
-	res.json({
-		message: `Gracz ${playerName} dołączył do lobby ${lobbyId}`,
-		lobby: lobby,
-	});
+    res.json(lobby);
 }
 
-export function deleteLobby(req, res) {
-	const lobbyId = parseInt(req.params.id, 10);
-	const deletedLobby = lobbyService.deleteLobby(lobbyId);
+export async function joinLobby(req, res){
+    const lobbyId = parseInt(req.params.id);
+    const { playerId } = req.body ?? {};
 
-	if (!deletedLobby) {
-		return res.status(404).json({ error: "Nie znaleziono takiego lobby" });
-	}
+    const result = await lobbyService.joinLobby(lobbyId, parseInt(playerId));
+    if (!result) {
+        return res.status(404).json({error: 'Lobby or Player not found'}); // do rozdzielenia za pomocą errorów
+    }
+    res.json({
+        message: `Player ${result.joinedPlayer.name} joined lobby: ${lobbyId}`,
+        joinedPlayer: result.joinedPlayer,
+        lobby: result.lobby
+    });
+}
 
-	res.json({
-		message: `Lobby o ID ${lobbyId} zostało pomyślnie usunięte`,
-		lobby: deletedLobby,
-	});
+export async function leaveLobby(req, res){
+    const lobbyId = parseInt((req.params.id));
+    const { playerId } = req.body ?? {};
+
+    const result = await lobbyService.leaveLobby(lobbyId, parseInt(playerId));
+    if (!result) {
+        return res.status(404).json({error: 'Lobby or Player not found'}); // do rozdzielenia za pomocą errorów
+    }
+
+    res.json({
+        message: `Player ${result.removedPlayer.name} leaved lobby ${lobbyId}`,
+        removedPlayer: result.removedPlayerPlayer,
+        lobby: result.lobby
+    });
+}
+
+export async function deleteLobby(req, res){
+    const lobbyId = parseInt(req.params.id);
+    const deletedLobby = await lobbyService.deleteLobby(lobbyId);
+
+    if (!deletedLobby) {
+        return res.status(404).json({ error: "'Lobby not found'y" });
+    }
+
+    res.json({
+        message: `Lobby ${lobbyId} was deleted`,
+        lobby: deletedLobby
+    });
 }
